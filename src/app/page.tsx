@@ -29,22 +29,28 @@ export default function Catalog() {
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       try {
-        const response = await fetch("http://localhost:3001/products");
+        const response = await fetch(
+          "https://next-sneakers-api.vercel.app/products"
+        );
         const productsData = await response.json();
         setProducts(productsData[0].data.data);
         setFilteredProducts(productsData[0].data.data);
 
         const categoriesResponse = await fetch(
-          "http://localhost:3001/categories"
+          "https://next-sneakers-api.vercel.app/categories"
         );
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData[0].data.data);
 
-        const brandsResponse = await fetch("http://localhost:3001/brands");
+        const brandsResponse = await fetch(
+          "https://next-sneakers-api.vercel.app/brands"
+        );
         const brandsData = await brandsResponse.json();
         setBrands(brandsData[0].data.data);
 
-        const collabsResponse = await fetch("http://localhost:3001/collabs");
+        const collabsResponse = await fetch(
+          "https://next-sneakers-api.vercel.app/collabs"
+        );
         const collabsData = await collabsResponse.json();
         setCollabs(collabsData[0].data.data);
       } catch (error) {

@@ -4,15 +4,7 @@ Após receber um projeto do Figma, desenvolvi um projeto de acordo com aquilo qu
 
 ## Primeiros passos
 
-Primeiro inicie o servidor fake utilizando no console:
-
-```bash
-npx json-server -p 3001 src/api/db.json
-```
-
-Isso irá iniciar um servidor e você pode acessá-lo na url: [http://localhost:3001](http://localhost:3001) no seu navegador, nessa url vocÇE pode observar as rotas disponíveis da API.
-
-Após isso inicie o servidor de desenvolvimento utilizando no console:
+Primeiro inicie o servidor de desenvolvimento utilizando no console:
 
 ```bash
 npm run dev
@@ -25,6 +17,10 @@ bun dev
 ```
 
 O projeto será aberto em [http://localhost:3000](http://localhost:3000).
+
+No caso deste projeto, eu já subi previamente na Vercel a API, neste link:
+
+[https://next-sneakers-api.vercel.app/](https://next-sneakers-api.vercel.app/)
 
 ## Features
 
