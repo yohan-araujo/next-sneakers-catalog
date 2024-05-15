@@ -1,113 +1,155 @@
+"use client";
 import Image from "next/image";
+import Next from "./assets/icons/next.svg";
+import SearchBar from "./components/SearchBar";
+import Button from "./components/Button";
+import ProductsTable from "./components/ProductsTable";
+import { useEffect, useState } from "react";
+import { IProduct } from "./types/product";
+import { ICategory } from "./types/category";
+import { IBrand } from "./types/brand";
+import { ICollab } from "./types/collab";
+import FilterModal from "./components/FilterModal";
 
-export default function Home() {
+export default function Catalog() {
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [brands, setBrands] = useState<IBrand[]>([]);
+  const [collabs, setCollabs] = useState<ICollab[]>([]);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/products");
+        const productsData = await response.json();
+        setProducts(productsData[0].data.data);
+        setFilteredProducts(productsData[0].data.data);
+
+        const categoriesResponse = await fetch(
+          "http://localhost:3000/categories"
+        );
+        const categoriesData = await categoriesResponse.json();
+        setCategories(categoriesData[0].data.data);
+
+        const brandsResponse = await fetch("http://localhost:3000/brands");
+        const brandsData = await brandsResponse.json();
+        setBrands(brandsData[0].data.data);
+
+        const collabsResponse = await fetch("http://localhost:3000/collabs");
+        const collabsData = await collabsResponse.json();
+        setCollabs(collabsData[0].data.data);
+      } catch (error) {
+        console.error("Erro ao buscar os dados:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const sortProducts = () => {
+    const sortedProducts = [...filteredProducts].sort((a, b) => {
+      if (sortOrder === "asc") {
+        return a.code.localeCompare(b.code);
+      } else {
+        return b.code.localeCompare(a.code);
+      }
+    });
+
+    setFilteredProducts(sortedProducts);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
+  const searchProducts = (search: string) => {
+    setSearchTerm(search);
+    const searched = products.filter((product) =>
+      product.name.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredProducts(searched);
+  };
+
+  const openFilterModal = () => {
+    setIsFilterModalOpen(true);
+  };
+
+  const closeFilterModal = () => {
+    setIsFilterModalOpen(false);
+  };
+
+  const applyFilters = (
+    selectedBrand: IBrand | null,
+    selectedCollab: ICollab | null
+  ) => {
+    const filteredByBrand = selectedBrand
+      ? products.filter((product) => product.brand_id === selectedBrand.id)
+      : products;
+
+    const filteredByBrandAndCollab = selectedCollab
+      ? filteredByBrand.filter(
+          (product) => product.collab_id === selectedCollab.id
+        )
+      : filteredByBrand;
+
+    setFilteredProducts(filteredByBrandAndCollab);
+
+    console.log(selectedBrand, selectedCollab);
+
+    closeFilterModal();
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="bg-zinc-900 px-8 py-5">
+      <div className="flex space-x-5">
+        <div className="flex w-8 h-8 rounded-lg bg-blue-500 justify-center items-center">
+          <Image src={Next} alt="NextJS Logo" />
+        </div>
+        <div className="flex justify-center items-center">
+          <strong className="text-white text-sm font-medium">Produtos</strong>
         </div>
       </div>
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+      <div className="flex justify-between mt-4 items-center">
+        <div className="flex space-x-3">
+          <strong className="font-bold text-2xl text-white">Produtos</strong>
+          <SearchBar
+            placeholder="Buscar Produtos..."
+            onSearch={searchProducts}
+          />
+        </div>
+        <div className="flex space-x-3">
+          <Button text="Filtrar" icon="filter" onClick={openFilterModal} />
+          <Button text="Ordenar" icon="order" onClick={sortProducts} />
+        </div>
+      </div>
+      <div className="mt-4">
+        <ProductsTable
+          products={filteredProducts.map((product) => ({
+            ...product,
+            category_name: categories.find(
+              (category) => category.id === product.category_id
+            )?.name,
+            brand_name: brands.find((brand) => brand.id === product.brand_id)
+              ?.name,
+            collab_name: collabs.find(
+              (collab) => collab.id === product.collab_id
+            )?.name,
+          }))}
+          brands={brands}
+          categories={categories}
+          collabs={collabs}
         />
       </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      {isFilterModalOpen && (
+        <FilterModal
+          brands={brands}
+          collabs={collabs}
+          onClose={closeFilterModal}
+          onSelect={applyFilters}
+        />
+      )}
+    </div>
   );
 }
