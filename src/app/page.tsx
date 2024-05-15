@@ -10,6 +10,7 @@ import { ICategory } from "./types/category";
 import { IBrand } from "./types/brand";
 import { ICollab } from "./types/collab";
 import FilterModal from "./components/FilterModal";
+import Loading from "./components/Loading";
 
 export default function Catalog() {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -20,31 +21,36 @@ export default function Catalog() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       try {
-        const response = await fetch("http://localhost:3000/products");
+        const response = await fetch("http://localhost:3001/products");
         const productsData = await response.json();
         setProducts(productsData[0].data.data);
         setFilteredProducts(productsData[0].data.data);
 
         const categoriesResponse = await fetch(
-          "http://localhost:3000/categories"
+          "http://localhost:3001/categories"
         );
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData[0].data.data);
 
-        const brandsResponse = await fetch("http://localhost:3000/brands");
+        const brandsResponse = await fetch("http://localhost:3001/brands");
         const brandsData = await brandsResponse.json();
         setBrands(brandsData[0].data.data);
 
-        const collabsResponse = await fetch("http://localhost:3000/collabs");
+        const collabsResponse = await fetch("http://localhost:3001/collabs");
         const collabsData = await collabsResponse.json();
         setCollabs(collabsData[0].data.data);
       } catch (error) {
         console.error("Erro ao buscar os dados:", error);
       }
+      setIsLoading(false);
     };
 
     fetchData();
@@ -95,8 +101,6 @@ export default function Catalog() {
 
     setFilteredProducts(filteredByBrandAndCollab);
 
-    console.log(selectedBrand, selectedCollab);
-
     closeFilterModal();
   };
 
@@ -125,22 +129,26 @@ export default function Catalog() {
         </div>
       </div>
       <div className="mt-4">
-        <ProductsTable
-          products={filteredProducts.map((product) => ({
-            ...product,
-            category_name: categories.find(
-              (category) => category.id === product.category_id
-            )?.name,
-            brand_name: brands.find((brand) => brand.id === product.brand_id)
-              ?.name,
-            collab_name: collabs.find(
-              (collab) => collab.id === product.collab_id
-            )?.name,
-          }))}
-          brands={brands}
-          categories={categories}
-          collabs={collabs}
-        />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <ProductsTable
+            products={filteredProducts.map((product) => ({
+              ...product,
+              category_name: categories.find(
+                (category) => category.id === product.category_id
+              )?.name,
+              brand_name: brands.find((brand) => brand.id === product.brand_id)
+                ?.name,
+              collab_name: collabs.find(
+                (collab) => collab.id === product.collab_id
+              )?.name,
+            }))}
+            brands={brands}
+            categories={categories}
+            collabs={collabs}
+          />
+        )}
       </div>
       {isFilterModalOpen && (
         <FilterModal

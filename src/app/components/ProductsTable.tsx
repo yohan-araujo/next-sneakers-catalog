@@ -1,11 +1,12 @@
 import NextButton from "./NextButton";
 import PrevButton from "./PreviousButton";
 import { IProduct } from "../types/product";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IBrand } from "../types/brand";
 import { ICategory } from "../types/category";
 import { ICollab } from "../types/collab";
 import ProductsModal from "./ProductsModal";
+import CheckboxButton from "./CheckboxButton";
 
 interface ProductsTableProps {
   products: IProduct[];
@@ -20,6 +21,10 @@ export default function ProductsTable({
   categories,
   collabs,
 }: ProductsTableProps) {
+  useEffect(() => {
+    setCurrentPage(1); // Defina currentPage como 1 sempre que filteredProducts mudar
+  }, [products]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [isProductsModalOpen, setIsProductsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
@@ -27,7 +32,6 @@ export default function ProductsTable({
   const indexLastProduct = currentPage * productsPerPage;
   const indexFirstProduct = indexLastProduct - productsPerPage;
   const currentProducts = products.slice(indexFirstProduct, indexLastProduct);
-
   const totalPages = Math.ceil(products.length / productsPerPage);
 
   const nextPage = () => {
@@ -36,9 +40,20 @@ export default function ProductsTable({
     }
   };
 
+  const lastPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(totalPages);
+    }
+  };
+
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
+    }
+  };
+  const firstPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(1);
     }
   };
 
@@ -58,12 +73,7 @@ export default function ProductsTable({
         <thead className="text-white">
           <tr>
             <th className="p-4">
-              <input
-                id="default-checkbox"
-                type="checkbox"
-                value=""
-                className="relative w-4 h-4 appearance-none border border-zinc-600 rounded checked:bg-zinc-400 "
-              />
+              <CheckboxButton />
             </th>
             <th className="px-3 py-4">Código</th>
             <th className="px-3 py-4">Produto</th>
@@ -77,12 +87,7 @@ export default function ProductsTable({
           {currentProducts.map((product) => (
             <tr key={product.id} className="border border-zinc-800">
               <td className="w-4 p-4">
-                <input
-                  id={`checkbox-${product.id}`}
-                  type="checkbox"
-                  value=""
-                  className="relative w-4 h-4 appearance-none border border-zinc-600 rounded checked:bg-zinc-400 "
-                />
+                <CheckboxButton />
               </td>
               <td className="px-3 py-4">
                 <span className="text-sm text-zinc-400 font-normal">
@@ -108,7 +113,7 @@ export default function ProductsTable({
               </td>
               <td className="flex px-3 py-4">
                 <div
-                  className="flex w-7 h-7 rounded-md justify-center items-center bg-zinc-800 cursor-pointer"
+                  className="flex w-7 h-7 rounded-md justify-center items-center bg-zinc-800 hover:opacity-50 cursor-pointer"
                   onClick={() => openModal(product)}
                 >
                   <span className="text-zinc-50 font-bold text-sm">...</span>
@@ -127,14 +132,14 @@ export default function ProductsTable({
         <div className="flex justify-center items-center space-x-8">
           <div>
             <span>
-              Página {currentPage} de {totalPages}
+              Página {totalPages != 0 ? currentPage : "0"} de {totalPages}
             </span>
           </div>
 
           <div className="flex space-x-2">
             <PrevButton
               icon="chev2l"
-              onClick={prevPage}
+              onClick={firstPage}
               disabled={currentPage === 1}
             />
             <PrevButton
@@ -149,7 +154,7 @@ export default function ProductsTable({
             />
             <NextButton
               icon="chev2r"
-              onClick={nextPage}
+              onClick={lastPage}
               disabled={currentPage === totalPages}
             />
           </div>

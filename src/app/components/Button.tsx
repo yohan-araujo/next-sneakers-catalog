@@ -13,7 +13,7 @@ export default function Button({ text, icon, onClick }: ButtonProps) {
 
   return (
     <button
-      className="flex space-x-3 px-4 py-2 items-center rounded-md bg-zinc-600"
+      className="flex space-x-3 px-4 py-2 items-center rounded-md bg-zinc-600 hover:bg-zinc-700 transition-colors"
       onClick={onClick}
     >
       {icon && <Image src={selectedIcon} alt="icone de ordenar ou filtro" />}

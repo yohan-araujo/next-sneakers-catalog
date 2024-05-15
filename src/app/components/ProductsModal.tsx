@@ -46,12 +46,20 @@ export default function ProductsModal({
 
           <strong className="text-zinc-50 mt-2">Categoria:</strong>
           <span className="text-zinc-400 mt-2 italic">{category?.name}</span>
+
           <strong className="text-zinc-50 mt-2">Brand:</strong>
           <span className="text-zinc-400 mt-2 italic">{brand?.name}</span>
-          <strong className="text-zinc-50 mt-2">Collab:</strong>
-          <span className="text-zinc-400 mt-2 italic">{collab?.name}</span>
 
-          <div className="mt-2">
+          {collab && (
+            <>
+              <strong className="text-zinc-50 mt-2">Collab:</strong>
+              <span className="text-zinc-400 mt-2 italic">{collab?.name}</span>
+            </>
+          )}
+
+          <div className="flex  space-x-3 mt-2">
+            <Button text="Alterar" />
+            <Button text="Deletar" />
             <Button text="Fechar" onClick={onClose} />
           </div>
         </div>

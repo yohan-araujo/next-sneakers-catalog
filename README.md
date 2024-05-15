@@ -4,15 +4,15 @@ Após receber um projeto do Figma, desenvolvi um projeto de acordo com aquilo qu
 
 ## Primeiros passos
 
-Primeiro inicie o servidor fake utilizando:
+Primeiro inicie o servidor fake utilizando no console:
 
 ```bash
-npx json-server --watch src/api/db.json
+npx json-server -p 3001 src/api/db.json
 ```
 
-Isso irá iniciar um servidor e você pode acessá-lo na url: [http://localhost:3000](http://localhost:3000) no seu navegador, nessa url vocÇE pode observar as rotas disponíveis da API.
+Isso irá iniciar um servidor e você pode acessá-lo na url: [http://localhost:3001](http://localhost:3001) no seu navegador, nessa url vocÇE pode observar as rotas disponíveis da API.
 
-Após isso inicie o servidor de desenvolvimento utilizando:
+Após isso inicie o servidor de desenvolvimento utilizando no console:
 
 ```bash
 npm run dev
@@ -24,13 +24,13 @@ pnpm dev
 bun dev
 ```
 
-O projeto será aberto em [http://localhost:3001](http://localhost:3001) pois estamos utilizando a porta 3000 para rodar a API.
+O projeto será aberto em [http://localhost:3000](http://localhost:3000).
 
 ## Features
 
 1. Logo quando abrimos o projeto podemos ver uma tabela com os itens que são carregados da API, podemos ver informações como o código e nome do produto, categoria, brand e collab.
 
-2. A tabela possui uma função de paginação, no momento a tabela está limitada a 5 itens por página e para passar de página basta utilizar os icones no canto inferior direito.
+2. A tabela possui uma função de paginação, no momento a tabela está limitada a 5 itens por página e para passar de página basta utilizar os botões no canto inferior direito, os botões com duas setas indicam ir para primeira página e última página.
 
 3. No canto superior direito da tabela há uma barra de pesquisar que pode ser utilizada para encontrar produtos específicos de forma mais adequada.
 

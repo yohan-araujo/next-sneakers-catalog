@@ -17,8 +17,8 @@ export default function NextButton({
 
   return (
     <button
-      className={`flex space-x-3 px-2 py-2 items-center rounded-md bg-zinc-800 ${
-        disabled ? "bg-opacity-50" : ""
+      className={`flex space-x-3 px-2 py-2 items-center rounded-md bg-zinc-800  ${
+        disabled ? "bg-opacity-50" : "hover:opacity-75 transition-colors"
       }`}
       disabled={disabled}
       onClick={onClick}

@@ -225,6 +225,27 @@
             "updated_at": "2024-05-09T18:24:48.000000Z",
             "deleted_at": null,
             "meta_infos": []
+          },
+          {
+            "id": 11,
+            "name": "Off-White x Air Jordan 4 Sail",
+            "subname": "Jordan Off Whitee",
+            "description": "Tenis de rico",
+            "color": "Cream",
+            "code": "18877",
+            "release_date": null,
+            "re_release_date": null,
+            "re_release_restock": null,
+            "value_retail": 2000,
+            "is_sole": 1,
+            "is_popular": 1,
+            "category_id": 1,
+            "brand_id": 1,
+            "collab_id": 4,
+            "created_at": "2024-04-07T00:00:00.000000Z",
+            "updated_at": "2024-05-09T18:24:48.000000Z",
+            "deleted_at": null,
+            "meta_infos": []
           }
         ],
         "first_page_url": "http://127.0.0.1:8000/api/catalogs?page=1",
