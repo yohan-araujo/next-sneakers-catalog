@@ -10,7 +10,7 @@ Primeiro inicie o servidor fake utilizando no console:
 npx json-server -p 3001 src/api/db.json
 ```
 
-Isso irá iniciar um servidor e você pode acessá-lo na url: [http://localhost:3001](http://localhost:3001) no seu navegador, nessa url vocÇE pode observar as rotas disponíveis da API.
+Isso irá iniciar um servidor e você pode acessá-lo na url: [http://localhost:3001](http://localhost:3001) no seu navegador, nessa url você podemos observar as rotas disponíveis da API.
 
 Após isso inicie o servidor de desenvolvimento utilizando no console:
 
