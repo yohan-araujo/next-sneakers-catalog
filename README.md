@@ -23,20 +23,19 @@ pnpm dev
 # ou
 bun dev
 ```
+
 O projeto será aberto em [http://localhost:3001](http://localhost:3001) pois estamos utilizando a porta 3000 para rodar a API.
 
 ## Features
 
-1) Logo quando abrimos o projeto podemos ver uma tabela com os itens que são carregados da API, podemos ver informações como o código e nome do produto, categoria, brand e collab.
+1. Logo quando abrimos o projeto podemos ver uma tabela com os itens que são carregados da API, podemos ver informações como o código e nome do produto, categoria, brand e collab.
 
-2)A tabela possui uma função de paginação, no momento a tabela está limitada a 5 itens por página e para passar de página basta utilizar os icones no canto inferior direito.
+2. A tabela possui uma função de paginação, no momento a tabela está limitada a 5 itens por página e para passar de página basta utilizar os icones no canto inferior direito.
 
-3)No canto superior direito da tabela há uma barra de pesquisar que pode ser utilizada para encontrar produtos específicos de forma mais adequada.
+3. No canto superior direito da tabela há uma barra de pesquisar que pode ser utilizada para encontrar produtos específicos de forma mais adequada.
 
-4)No canto superior direito da tabela, o primeiro botão irá abrir uma modal que permite definir filtros para exibir informações de acordo com os mesmos.
+4. No canto superior direito da tabela, o primeiro botão irá abrir uma modal que permite definir filtros para exibir informações de acordo com os mesmos.
 
-5)O segundo botão, ordena de forma crescente e decrescente de acordo com o primeiro e segundo clique respectivamente.
+5. O segundo botão, ordena de forma crescente e decrescente de acordo com o primeiro e segundo clique respectivamente.
 
-6)O botão com reticências na coluna mais a direita da tabela permite ver uma modal com informações adicionais do produto em questão.
-
-
+6. O botão com reticências na coluna mais a direita da tabela permite ver uma modal com informações adicionais do produto em questão.
